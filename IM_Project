@@ -1,8 +1,10 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
-import Tkinter as tk
-from Crypto.Cipher import AES
-
+import tkinter as tk
+#from Crypto.Cipher import AES
+  ####Having a problem with Crypto module /
+  ####possibly an issue with shared dependencies
+  
 def do_encrypt(message):
     obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
     ciphertext = obj.encrypt(message)
@@ -45,7 +47,9 @@ def on_closing(event=None):
     send()
 
 top = tk.Tk()
-top.title("SecureX Chat Room")
+top.title("Encrypted Jabber Replacement Project")
+#### Change the title later, this is fill-in
+
 
 messages_frame = tk.Frame(top)
 my_msg = tk.StringVar()  # For the messages to be sent.
@@ -66,20 +70,23 @@ send_button.pack()
 
 top.protocol("WM_DELETE_WINDOW", on_closing)
 
+###There's a problem happening between tkinter and the sockets module
+
 #----Now comes the sockets part----
-HOST = raw_input('Enter host: ')
-PORT = raw_input('Enter port: ')
-if not PORT:
-    PORT = 5000
-else:
-    PORT = int(PORT)
+#HOST = input('Enter host: ')
+#PORT = input('Enter port: ')
+#if not PORT:
+ #   PORT = 5000
+#else:
+ #   PORT = int(PORT)
 
-BUFSIZ = 1024
-ADDR = (HOST, PORT)
+#BUFSIZ = 1024
+#ADDR = (HOST, PORT)
 
-client_socket = socket(AF_INET, SOCK_STREAM)
-client_socket.connect(ADDR)
+#client_socket = socket(AF_INET, SOCK_STREAM)
+#client_socket.connect(ADDR)
 
 receive_thread = Thread(target=receive)
 receive_thread.start()
 tk.mainloop()  # Starts GUI execution.
+#top.mainloop()
