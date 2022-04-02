@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Server for multithreaded (asynchronous) chat application."""
 from socket import AF_INET, socket, SOCK_STREAM
+import socket
 from threading import Thread
 import sys
 import errno
@@ -8,6 +9,18 @@ import errno
 my_key = 'TURING'
 
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+
+clients = {}
+addresses = {}
+
+HOST = '127.0.1.1'
+PORT = 300
+BUFSIZ = 1024
+ADDR = (HOST, PORT)
+
+SERVER = socket.socket(AF_INET, SOCK_STREAM)
+SERVER.bind(ADDR)
 
 def message_decryption(key, message):
     #message = message_decryption(client.recv(BUFSIZ).decode("utf8"))
@@ -71,40 +84,55 @@ def accept_incoming_connections():
     while True:
         client, client_address = SERVER.accept()
         print("%s:%s has connected." % client_address)
-        client.send(bytes("Type your name and press enter!", "utf8"))
+        client.send(bytes(encrypt_message(my_key, "Type your name and press enter!"), "utf8"))
         addresses[client] = client_address
         Thread(target=handle_client, args=(client,)).start()
 
+def sendallclients(message):
+    for client in clients:
+        client.send(message)
 
 def handle_client(client):  # Takes client socket as argument.
     """Handles a single client connection."""
 
-    name = message_decryption(my_key, client.recv(BUFSIZ).decode("utf8"))
+    name = str(message_decryption(my_key, client.recv(BUFSIZ).decode("utf8")))
     welcome = 'Welcome %s! If you ever want to quit, type {quit} to exit.' % name
-    client.send(bytes(welcome, "utf8"))
-    msg = "%s has joined the chat!" % name
-    broadcast(bytes(msg, "utf8"))
+    #client.send(bytes(welcome, "utf8"))            unencrypted
+    client.send(bytes((encrypt_message(my_key, welcome)), "utf8"))
+    msg = str("%s has joined the chat!" % name)
+    #broadcast(bytes(msg, "utf8"))                  unencrypted
+    sendallclients(bytes((encrypt_message(my_key, msg)), "utf8"))
+
     clients[client] = name
 
     while True:
         #msg = client.recv(BUFSIZ)
         try:
             message = str(message_decryption(my_key, client.recv(BUFSIZ).decode("utf8")))
-            #msg = bytes(message_decryption(my_key, client.recv(BUFSIZ).decode("utf8"))))
+
             #msg = message_decryption(my_key, my_msg)
 
     #        if msg != bytes("{quit}", "utf8"):
     #            broadcast(msg, name + ": ")
             #if message != bytes("{quit}", "utf8"):
             if message != "{quit}":
-                broadcast(bytes(message, "utf8"), name + ": ")
+                #broadcast(bytes(message, "utf8"), name + ": ")     unencrypted
+                prefix = (name + ": ")
+                prefixed_message = (prefix + message)
+                print(prefixed_message)
+                encrypted_msg = (encrypt_message(my_key, prefixed_message))
+                print(encrypted_msg)
+
+
+                sendallclients(bytes((encrypted_msg), "utf8"))
 
             else:
-                client.send(bytes("{quit}", "utf8"))
-                #client.send("{quit}")
+                client.send(bytes(encrypt_message(my_key, "{quit}"), "utf8"))
                 client.close()
                 del clients[client]
-                broadcast(bytes("%s has left the chat." % name, "utf8"))
+
+                sendallclients(bytes(encrypt_message("%s has left the chat." % name),"utf8"))
+                #broadcast(bytes("%s has left the chat." % name, "utf8"))   unencrypted
                 break
         except IOError as e:
             if e.errno == errno.EPIPE:
@@ -118,18 +146,9 @@ def broadcast(msg, prefix=""):  # prefix is for name identification.
 
     for sock in clients:
         sock.send(bytes(prefix, "utf8") + msg)
+###### ^----------Don't use, unencrypted
 
 
-clients = {}
-addresses = {}
-
-HOST = '127.0.1.1'
-PORT = 300
-BUFSIZ = 1024
-ADDR = (HOST, PORT)
-
-SERVER = socket(AF_INET, SOCK_STREAM)
-SERVER.bind(ADDR)
 
 if __name__ == "__main__":
     SERVER.listen(5)
