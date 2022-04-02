@@ -38,7 +38,6 @@ def encrypt_message(key, message):
     return ''.join(encrypted)
 
 def message_decryption(key, message):
-    #message = message_decryption(client.recv(BUFSIZ).decode("utf8"))
     decrypted = []  # Stores the encrypted/decrypted message string.
 
     key_index = 0
@@ -70,12 +69,12 @@ def receive():
     """Handles receiving of messages."""
     while True:
         try:
-            msg = client_socket.recv(BUFSIZ).decode("utf8")
-            #decoded = client_socket.recv(BUFSIZ).decode("utf8")
-            #print(decoded)
+            #msg = client_socket.recv(BUFSIZ).decode("utf8")
+            decoded = client_socket.recv(BUFSIZ).decode("utf8")
+            print(decoded)
             #msg = str(message_decryption(my_key, client_socket.recv(BUFSIZ).decode("utf8")))
-            #msg = decoded
-            #print(msg)
+            msg = message_decryption(my_key, decoded)
+            print(msg)
             msg_list.insert(tkinter.END, msg)
         except OSError:  # Possibly client has left the chat.
             break
@@ -88,8 +87,7 @@ def send(event=None):  # event is passed by binders.
     client_socket.send(bytes(encrypt_message(my_key, msg), "utf8"))
     if msg == "{quit}":
         client_socket.close()
-        window.quit()    ###using .quit causes the windows to freeze
-        #top.destroy()
+        window.quit()
 
 
 def on_closing(event=None):
@@ -105,7 +103,7 @@ window.resizable(False, False)
 
 messages_frame = tkinter.Frame(window)
 my_msg = tkinter.StringVar()  # For the messages to be sent.
-#my_msg.set("Type your messages here.")
+
 scrollbar = tkinter.Scrollbar(messages_frame)  # To navigate through past messages.
 scrollbar.configure(bg='grey25')
 
@@ -133,6 +131,7 @@ window.protocol("WM_DELETE_WINDOW", on_closing)
 #else:
 #    PORT = int(PORT)
 
+#HOST = '127.0.1.1'
 HOST = '127.0.1.1'
 PORT = 300
 
