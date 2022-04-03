@@ -1,15 +1,51 @@
 #!/usr/bin/env python3
-"""Server for multithreaded (asynchronous) chat application."""
+# """Server for multithreaded (asynchronous) chat application."""
+
+# import required modules
 from socket import AF_INET, socket, SOCK_STREAM
 import socket
-from threading import Thread
+# from threading import Thread
+import threading
+
 import sys
 import errno
+from signal import signal, SIGPIPE, SIG_DFL
+from sys import exit, stderr, stdout
+from traceback import print_exc
+from functools import wraps
 
+
+##Ignore SIG_PIPE and don't throw SIGPIPE broken exceptions
+# signal(SIGPIPE,SIG_DFL)
+
+def suppress_broken_pipe_msg(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except SystemExit:
+            raise
+        except:
+            print_exc()
+            exit(1)
+        finally:
+            try:
+                stdout.flush()
+            finally:
+                try:
+                    stdout.close()
+                finally:
+                    try:
+                        stderr.flush()
+                    finally:
+                        stderr.close()
+
+    return wrapper
+
+
+# Objects used for vigenere cipher
 my_key = 'TURING'
-
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
 
 clients = {}
 addresses = {}
@@ -19,39 +55,41 @@ PORT = 300
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
-SERVER = socket.socket(AF_INET, SOCK_STREAM)
-SERVER.bind(ADDR)
+LISTENER_LIMIT = 5
+
 
 def message_decryption(key, message):
-    #message = message_decryption(client.recv(BUFSIZ).decode("utf8"))
-    decrypted = []  # Stores the encrypted/decrypted message string.
+    # Stores the decrypted message string.
+    decrypted = []
 
     key_index = 0
     key = key.upper()
 
-    for symbol in message:  # Loop through each symbol in message.
+    for symbol in message:  # Loops through each symbol in message.
         num = LETTERS.find(symbol.upper())
         if num != -1:  # -1 means symbol.upper() was not found in LETTERS.
             num -= LETTERS.find(key[key_index])  # Subtract if decrypting.
-
             num %= len(LETTERS)  # Handle any wraparound.
 
-            # Add the encrypted/decrypted symbol to the end of translated:
+            # Add the decrypted symbol to the end of decrypted:
             if symbol.isupper():
                 decrypted.append(LETTERS[num])
             elif symbol.islower():
                 decrypted.append(LETTERS[num].lower())
 
-            key_index += 1  # Move to the next letter in the key.
+            # Moves to the next letter in the key.
+            key_index += 1
             if key_index == len(key):
                 key_index = 0
         else:
-            # Append the symbol without encrypting/decrypting.
+            # Append the symbol without decrypting.
             decrypted.append(symbol)
 
     return ''.join(decrypted)
 
+
 def encrypt_message(key, message):
+    # Stores the encrypted message string
     encrypted = []
 
     key_index = 0
@@ -61,99 +99,99 @@ def encrypt_message(key, message):
         num = LETTERS.find(symbol.upper())
         if num != -1:  # -1 means symbol.upper() was not found in LETTERS.
             num += LETTERS.find(key[key_index])  # Add if encrypting.
-
             num %= len(LETTERS)  # Handle any wraparound.
 
-            # Add the encrypted/decrypted symbol to the end of translated:
+            # Add the encrypted symbol to the end of encrypted:
             if symbol.isupper():
                 encrypted.append(LETTERS[num])
             elif symbol.islower():
                 encrypted.append(LETTERS[num].lower())
 
-            key_index += 1  # Move to the next letter in the key.
+            # Moves to the next letter in the key.
+            key_index += 1
             if key_index == len(key):
                 key_index = 0
         else:
-            # Append the symbol without encrypting/decrypting.
+            # Append the symbol without encrypting.
             encrypted.append(symbol)
 
     return ''.join(encrypted)
 
-def accept_incoming_connections():
-    """Sets up handling for incoming clients."""
-    while True:
-        client, client_address = SERVER.accept()
-        print("%s:%s has connected." % client_address)
-        client.send(bytes(encrypt_message(my_key, "Type your name and press enter!"), "utf8"))
-        addresses[client] = client_address
-        Thread(target=handle_client, args=(client,)).start()
 
 def sendallclients(message):
-    for client in clients:
-        client.send(message)
+    try:
+        for client in clients:
+            client.send(message)
+    except IOError as e:
+        if e.errno == errno.EPIPE:
+            pass
 
-def handle_client(client):  # Takes client socket as argument.
-    """Handles a single client connection."""
+
+def handle_client(client):
+    # Handles the client connections to the server
 
     name = str(message_decryption(my_key, client.recv(BUFSIZ).decode("utf8")))
-    welcome = 'Welcome %s! If you ever want to quit, type {quit} to exit.' % name
-    #client.send(bytes(welcome, "utf8"))            unencrypted
+
+    welcome = 'Welcome %s! If you ever want to quit, click the exit button below.' % name
     client.send(bytes((encrypt_message(my_key, welcome)), "utf8"))
+
     msg = str("%s has joined the chat!" % name)
-    #broadcast(bytes(msg, "utf8"))                  unencrypted
     sendallclients(bytes((encrypt_message(my_key, msg)), "utf8"))
 
     clients[client] = name
 
     while True:
-        #msg = client.recv(BUFSIZ)
         try:
             message = str(message_decryption(my_key, client.recv(BUFSIZ).decode("utf8")))
 
-            #msg = message_decryption(my_key, my_msg)
-
-    #        if msg != bytes("{quit}", "utf8"):
-    #            broadcast(msg, name + ": ")
-            #if message != bytes("{quit}", "utf8"):
             if message != "{quit}":
-                #broadcast(bytes(message, "utf8"), name + ": ")     unencrypted
                 prefix = (name + ": ")
                 prefixed_message = (prefix + message)
-                print(prefixed_message)
+
                 encrypted_msg = (encrypt_message(my_key, prefixed_message))
-                print(encrypted_msg)
-
-
                 sendallclients(bytes((encrypted_msg), "utf8"))
 
             else:
                 client.send(bytes(encrypt_message(my_key, "{quit}"), "utf8"))
-                client.close()
-                del clients[client]
+                # client.close()
 
-                sendallclients(bytes(encrypt_message("%s has left the chat." % name),"utf8"))
-                #broadcast(bytes("%s has left the chat." % name, "utf8"))   unencrypted
+                sendallclients(bytes(encrypt_message(my_key, "%s has left the chat." % name), "utf8"))
+                print('%s has disconnected.' % name)
+
+                del clients[client]
                 break
         except IOError as e:
             if e.errno == errno.EPIPE:
                 pass
 
 
+def main():
+    SERVER = socket.socket(AF_INET, SOCK_STREAM)
 
+    try:
+        SERVER.bind(ADDR)
+        print(f'Server running on {HOST}: port {PORT}')
+        print("Waiting for connection...")
 
-def broadcast(msg, prefix=""):  # prefix is for name identification.
-    """Broadcasts a message to all the clients."""
+    except:
+        print(f'Unable to bind to host {HOST} and port {PORT}')
 
-    for sock in clients:
-        sock.send(bytes(prefix, "utf8") + msg)
-###### ^----------Don't use, unencrypted
+    # Set server's user limit
+    SERVER.listen(LISTENER_LIMIT)
 
+    while 1:
+        client, address = SERVER.accept()
+        print(f'{address[0]}:{address[1]} has connected.')
+        client.send(bytes(encrypt_message(my_key, 'Type your name below and click send to join server'), 'utf8'))
+
+        addresses[client] = address
+
+        threading.Thread(target=handle_client, args=(client,)).start()
 
 
 if __name__ == "__main__":
-    SERVER.listen(5)
-    print("Waiting for connection...")
-    ACCEPT_THREAD = Thread(target=accept_incoming_connections)
+    main()
+
     ACCEPT_THREAD.start()
     ACCEPT_THREAD.join()
     SERVER.close()
