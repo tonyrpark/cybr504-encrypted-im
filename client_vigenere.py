@@ -133,7 +133,7 @@ window.protocol("WM_DELETE_WINDOW", on_closing)
 #else:
 #    PORT = int(PORT)
 
-HOST = '127.0.1.1'
+HOST = '127.0.2.1'
 PORT = 300
 
 BUFSIZ = 1024

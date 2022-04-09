@@ -123,7 +123,7 @@ def broadcast(msg, prefix=""):  # prefix is for name identification.
 clients = {}
 addresses = {}
 
-HOST = '127.0.1.1'
+HOST = '127.0.2.1'
 PORT = 300
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
