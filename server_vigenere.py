@@ -4,43 +4,10 @@
 # import required modules
 from socket import AF_INET, socket, SOCK_STREAM
 import socket
-# from threading import Thread
+from threading import Thread
 import threading
-
 import sys
 import errno
-from signal import signal, SIGPIPE, SIG_DFL
-from sys import exit, stderr, stdout
-from traceback import print_exc
-from functools import wraps
-
-
-##Ignore SIG_PIPE and don't throw SIGPIPE broken exceptions
-# signal(SIGPIPE,SIG_DFL)
-
-def suppress_broken_pipe_msg(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        try:
-            return f(*args, **kwargs)
-        except SystemExit:
-            raise
-        except:
-            print_exc()
-            exit(1)
-        finally:
-            try:
-                stdout.flush()
-            finally:
-                try:
-                    stdout.close()
-                finally:
-                    try:
-                        stderr.flush()
-                    finally:
-                        stderr.close()
-
-    return wrapper
 
 
 # Objects used for vigenere cipher
