@@ -139,7 +139,7 @@ def msg_list_hover_leave(e):
 #Creates the gui window
 window = tkinter.Tk()
 window.title("Secure PyChat")
-window.iconphoto(True, PhotoImage(file="shield_icon.gif"))
+window.iconphoto(True, PhotoImage(file="logo3.png"))
 window.configure(bg='grey15')
 window.geometry('600x550')
 window.resizable(False, False)
