@@ -139,7 +139,7 @@ def msg_list_hover_leave(e):
 #Creates the gui window
 window = tkinter.Tk()
 window.title("Secure PyChat")
-window.iconphoto(True, PhotoImage(file="logo3.png"))
+window.iconphoto(True, PhotoImage(file="IMG/logo3.png"))
 window.configure(bg='grey15')
 window.geometry('600x550')
 window.resizable(False, False)
@@ -166,11 +166,11 @@ entry_field = tkinter.Entry(window, textvariable=my_msg, relief='sunken')
 entry_field.bind("<Return>", send)
 entry_field.pack(padx=20, pady=5, ipadx=1, ipady=1)
 
-send_btn = PhotoImage(file='send_icon_shrunk.png')
+send_btn = PhotoImage(file='IMG/send_icon_shrunk.png')
 send_button = tkinter.Button(window, image=send_btn, command=send, bg='grey15', borderwidth=0)
 send_button.place(x=250, y=450)
 
-exit_btn = PhotoImage(file='close_icon_shrunk.png')
+exit_btn = PhotoImage(file='IMG/close_icon_shrunk.png')
 exit_button = tkinter.Button(window, image=exit_btn, command=close_window, bg='grey15', borderwidth=0)
 exit_button.place(x=300, y=450)
 
