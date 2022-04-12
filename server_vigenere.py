@@ -17,7 +17,7 @@ LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 clients = {}
 addresses = {}
 
-HOST = '127.0.8.1'
+HOST = '127.1.1.1'
 PORT = 9990
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
