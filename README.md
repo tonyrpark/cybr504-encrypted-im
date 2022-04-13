@@ -17,7 +17,7 @@ Heroku Link to Site: [to be added in future edition]
 
 1. Screenshot of App 1
    <br>
-   ![Screenshot 1](./WIMC/front-end/public/images/screenshot1.jpg)
+   ![Screenshot 1](./public/images/screenshot1.jpg)
 
 2. Screenshot of App 2
    <br>
@@ -48,6 +48,7 @@ Heroku Link to Site: [to be added in future edition]
 ## Technologies-Used
 
 Requirements.txt Packages
+
 - click==8.1.2 <br>
 - Flask==2.1.1 <br>
 - gunicorn==20.1.0 <br>
@@ -57,9 +58,10 @@ Requirements.txt Packages
 - MarkupSafe=2.1.1 <br>
 - Werkzeug==2.1.1 <br>
 - zipp==3.8.0 <br>
- <br> <br>
+  <br> <br>
 
 ## Credits
+
 - Chaturvedi, S. (2017, November 22). Let's write a chat app in python. Retrieved from https://medium.com/swlh/lets-write-a-chat-app-in-python-f6783a9ac170
 
 - Chaturvedi, S. [@schedutron] (2018). chat_clnt.py [source code]. Retrieved from https://gist.github.com/schedutron/287324944d765ae0656eec6971ca40d8
