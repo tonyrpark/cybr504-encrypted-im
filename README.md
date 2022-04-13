@@ -1,4 +1,4 @@
-# PROJECT #3 UCSD FULLSTACK COURSE 2021 | cybr504-encrypted-im
+# cybr504-encrypted-im
 
 Project Members: Jessica Eyerman, Tony Park, Hayden Lawson, Peiyin Tsay <br>
 Project Team Name: Iron Wolf Cybersecurity CYBR504 USD MS CSE <br>
