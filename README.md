@@ -1,41 +1,33 @@
-# cybr504-encrypted-im
-Encrypted messaging application written in Python for the USD MSE CYBR504
+# PROJECT #3 UCSD FULLSTACK COURSE 2021 | cybr504-encrypted-im
 
-ADDING FOR PUSH/PULL
+Project Members: Jessica Eyerman, Tony Park, Hayden Lawson, Peiyin Tsay <br>
+Project Team Name: Iron Wolf Cybersecurity CYBR504 USD MS CSE <br>
+Project name and Summary: SecurePyChat - A end-to-end Encrypted Chat Program in Python <br>
 
-# PROJECT #3 UCSD FULLSTACK COURSE 2021
-
-Project Members: Tony, Mike, Robert, Dustin <br>
-Project Team Name: Dysfunctional But Still Functional Muddatruckaz <br>
-Project name and Summary: Dude, Where's My Crypto, a Crypto app for Everyone <br>
-
-Heroku Link to Site: https://project-3-dwmc-frontend.herokuapp.com/
+Heroku Link to Site: [to be added in future edition]
 
 # Table of Contents
 
 - [Screenshots](#screenshots)
-- [Coding-Requirements-Hit](#Coding-Requirements-Hit)
-- [Additional-Requirements](#Additional-Requirements)
+- [Coding-Requirements-Hit](#Project Requirements Hit)
 - [Technologies-Used](#Technologies-Used)
+- [Credits](#Credits)
 
 # Screenshots:
 
-1. GIF of App 1
-   ![GIF of App 1](./WIMC/front-end/public/images/app1.gif)
-
-2. Screenshot of App 1
+1. Screenshot of App 1
    <br>
    ![Screenshot 1](./WIMC/front-end/public/images/screenshot1.jpg)
 
-3. Screenshot of App 2
+2. Screenshot of App 2
    <br>
    ![Screenshot 2](./WIMC/front-end/public/images/screenshot2.jpg)
 
-4. Screenshot of App 3
+3. Screenshot of App 3
    <br>
    ![Screenshot 3](./WIMC/front-end/public/images/screenshot3.jpg)
 
-5. Screenshot of App 4
+4. Screenshot of App 4
    <br>
    ![Screenshot 4](./WIMC/front-end/public/images/screenshot4.jpg)
 
@@ -66,5 +58,17 @@ Requirements.txt Packages
 - Werkzeug==2.1.1 <br>
 - zipp==3.8.0 <br>
  <br> <br>
+
+## Credits
+- Chaturvedi, S. (2017, November 22). Let's write a chat app in python. Retrieved from https://medium.com/swlh/lets-write-a-chat-app-in-python-f6783a9ac170
+
+- Chaturvedi, S. [@schedutron] (2018). chat_clnt.py [source code]. Retrieved from https://gist.github.com/schedutron/287324944d765ae0656eec6971ca40d8
+
+- Chaturvedi, S. [@schedutron] (2018). chat_serv.py [source code]. Retrieved from https://gist.github.com/schedutron/cd925247bfc4f8ae7930bbd99984a441
+
+- Elder, J. [@Codemy.com] (2022). Python GUIs with Tkinter. Retrieved from Youtube: https://youtube.com/playlist?list=PLCC34OHNcOtoC6GglhF3ncJ5rLwQrLGnV
+
+- Sweigart, A. (2018). Cracking codes with pythons: An introduction to building and breaking ciphers. San Francisco: No Starch Press.
+
 © Iron Wolf Cybersecurity Team 2022
 Tony Park Jessica Eyerman Hayden Lawson Peiyin Tsay
