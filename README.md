@@ -6,10 +6,12 @@ Project name and Summary: SecurePyChat - A end-to-end Encrypted Chat Program in 
 
 Heroku Link to Site: [to be added in future edition]
 
+To start project, pull code from this Github Repository. Ensure you are using a code editor like PyCharm or Visual Studio Code. Ensure you have up-to-date packages. Check 'requirements.txt' and download any applicable add-ons. Run server first, then client. If ports get hung, change host to different IP (i.e. 127.0.0.1 to 127.0.1.1)
+
 # Table of Contents
 
 - [Screenshots](#screenshots)
-- [Coding-Requirements-Hit](#Project Requirements Hit)
+- [Project-Requirements-Hit](#Project-Requirements-Hit)
 - [Technologies-Used](#Technologies-Used)
 - [Credits](#Credits)
 
@@ -19,31 +21,12 @@ Heroku Link to Site: [to be added in future edition]
    <br>
    ![Screenshot 1](./public/images/screenshot1.jpg)
 
-2. Screenshot of App 2
-   <br>
-   ![Screenshot 2](./WIMC/front-end/public/images/screenshot2.jpg)
+## Project-Requirements-Hit
 
-3. Screenshot of App 3
-   <br>
-   ![Screenshot 3](./WIMC/front-end/public/images/screenshot3.jpg)
-
-4. Screenshot of App 4
-   <br>
-   ![Screenshot 4](./WIMC/front-end/public/images/screenshot4.jpg)
-
-## Project Requirements Hit
-
-[x] Must use ReactJS in some way (even if minimal) <br>
-[x] Must use a Node and Express Web Server <br>
-[x] Must be backed by a MySQL or MongoDB Database with a Sequelize or Mongoose ORM <br>
-[x] Must have both GET and POST routes for retrieving and adding new data <br>
-[x] Must be deployed using Heroku (with Data) <br>
-[x] Must utilize at least two libraries, packages, or technologies that we haven't discussed <br>
-[x] Must allow for or involve the authentication of users in some way <br>
-[x] Must have a polished frontend/UI <br>
-[x] Must have folder structure that meets MVC Paradigm <br>
-[x] Must meet good quality coding standards (indentation, scoping, naming) <br>
-[x] Must not expose sensitive API key information on the server <br>
+[x] Deliverable 1: A Project Plan to add your functional application to the baseline project <br>
+[x] Deliverable 2: Final Project Report _CANCELLED_ <br>
+[x] Deliverable 3: Working Source Code (Hosted on GitHub) <br>
+[x] Deliverable 4: Prepare a viewable presentation based on your project report <br>
 
 ## Technologies-Used
 
@@ -58,6 +41,10 @@ Requirements.txt Packages
 - MarkupSafe=2.1.1 <br>
 - Werkzeug==2.1.1 <br>
 - zipp==3.8.0 <br>
+- Heroku <br>
+- Python3 <br>
+- tkinter
+- PyCharm Community Edition 2021.3.3
   <br> <br>
 
 ## Credits
